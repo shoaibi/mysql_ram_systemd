@@ -1,0 +1,20 @@
+[Unit]
+Description=MariaDB database server
+After=syslog.target
+
+[Service]
+User=root
+Group=root
+#User=mysql
+#Group=mysql
+
+ExecStartPre=/root/scripts/mysql_ram/to_memory.sh
+ExecStart=/usr/bin/mysqld --user=root --pid-file=/run/mysqld/mysqld.pid 
+ExecStartPost=/usr/bin/mysqld-post
+ExecStopPost=/root/scripts/mysql_ram/to_disk.sh
+
+Restart=always
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
